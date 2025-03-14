@@ -25,7 +25,7 @@ VOCAB_FILE=$3 #<Specify path to file>/gpt2-vocab.json
 MERGE_FILE=$4 #<Specify path to file>/gpt2-merges.txt
 DATA_PATH=$5 #<Specify path and file prefix>_text_document
 
-DS_CONFIG="./ds_configs/gpt_ds_config.json"
+DS_CONFIG="./examples/ds_configs/gpt_ds_config.json"
 GLOBAL_BATCH=64
 MICRO_BATCH=4
 ZERO_STAGE=2
