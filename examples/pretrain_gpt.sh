@@ -34,7 +34,7 @@ cat <<EOT > $DS_CONFIG
 {
   "train_batch_size" : $GLOBAL_BATCH,
   "train_micro_batch_size_per_gpu": $MICRO_BATCH,
-  "steps_per_print": 1,
+  "steps_per_print": 100,
 
   "zero_optimization": {
     "stage": $ZERO_STAGE
