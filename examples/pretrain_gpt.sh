@@ -55,6 +55,7 @@ ds_args=" --no-pipeline-parallel ${ds_args}"
 ds_args=" --deepspeed_config=$DS_CONFIG ${ds_args}"
 ds_args=" --zero-stage=$ZERO_STAGE ${ds_args}"
 ds_args=" --deepspeed-activation-checkpointing ${ds_args}"
+ds_args=" --no-persist-layer-norm ${ds_args}"
 
 GPT_ARGS="
     --num-layers 24 \
