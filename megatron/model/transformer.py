@@ -353,12 +353,16 @@ class CoreAttention(MegatronModule):
                        value_layer.size(3))
 
         # change view [sk, b * np, hn]
-        value_layer = value_layer.view(value_layer.size(0),
+        value_layer = value_layer.contiguous().view(value_layer.size(0),
                                        output_size[0] * output_size[1], -1)
+        # value_layer = value_layer.view(value_layer.size(0),
+        #                                output_size[0] * output_size[1], -1)
 
         # change view [b * np, sq, sk]
-        attention_probs = attention_probs.view(output_size[0] * output_size[1],
+        attention_probs = attention_probs.contiguous().view(output_size[0] * output_size[1],
                                                output_size[2], -1)
+        # attention_probs = attention_probs.view(output_size[0] * output_size[1],
+        #                                        output_size[2], -1)
 
         # matmul: [b * np, sq, hn]
         context_layer = torch.bmm(attention_probs, value_layer.transpose(0, 1))
