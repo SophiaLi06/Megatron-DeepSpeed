@@ -303,8 +303,10 @@ class CoreAttention(MegatronModule):
         # query_layer = query_layer.view(output_size[2],
         #                                output_size[0] * output_size[1], -1)
         # [sk, b, np, hn] -> [sk, b * np, hn]
-        key_layer = key_layer.view(output_size[3],
+        key_layer = key_layer.contiguous().view(output_size[3],
                                    output_size[0] * output_size[1], -1)
+        # key_layer = key_layer.view(output_size[3],
+        #                            output_size[0] * output_size[1], -1)
 
         # preallocting input tensor: [b * np, sq, sk]
         matmul_input_buffer = parallel_state.get_global_memory_buffer().get_tensor(
