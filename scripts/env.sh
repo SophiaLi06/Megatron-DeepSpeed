@@ -1,3 +1,5 @@
+pip install -r requirements/pytorch\:24.01/requirements.txt
+pip install deepspeed
 export PYTORCH_IMAGE=nvcr.io/nvidia/pytorch:24.01-py3
 export CHECKPOINT_PATH="new_checkpoints"
 export TENSORBOARD_LOGS_PATH="workspace/logs"
