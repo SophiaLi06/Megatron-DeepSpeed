@@ -1,13 +1,29 @@
 #!/bin/bash
 
+RECREATE_CHECKPOINTS=0
+# add an "-d" option to delete the previous checkpoint
+while getopts "d" opt; do
+  case ${opt} in
+    d )
+      RECREATE_CHECKPOINTS=1
+      ;;
+    \? )
+      echo "Usage: cmd [-d]"
+      ;;
+  esac
+done
+
+# clear the options
+shift $((OPTIND -1))
+
 # Runs the "345M" parameter model
 
 export CUDA_DEVICE_MAX_CONNECTIONS=1
 
-CHECKPOINT_PATH=<Specify path>
-VOCAB_FILE=<Specify path to file>/gpt2-vocab.json
-MERGE_FILE=<Specify path to file>/gpt2-merges.txt
-DATA_PATH=<Specify path and file prefix>_text_document
+CHECKPOINT_PATH=$1 #<Specify path>
+VOCAB_FILE=$3 #<Specify path to file>/gpt2-vocab.json
+MERGE_FILE=$4 #<Specify path to file>/gpt2-merges.txt
+DATA_PATH=$5 #<Specify path and file prefix>_text_document
 
 GPT_ARGS="
     --num-layers 24 \
@@ -18,7 +34,7 @@ GPT_ARGS="
     --micro-batch-size 4 \
     --global-batch-size 8 \
     --lr 0.00015 \
-    --train-iters 500000 \
+    --train-iters 500 \
     --lr-decay-iters 320000 \
     --lr-decay-style cosine \
     --min-lr 1.0e-5 \
