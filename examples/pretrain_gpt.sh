@@ -26,7 +26,28 @@ MERGE_FILE=$4 #<Specify path to file>/gpt2-merges.txt
 DATA_PATH=$5 #<Specify path and file prefix>_text_document
 
 DS_CONFIG="./ds_configs/gpt_ds_config.json"
+GLOBAL_BATCH=64
+MICRO_BATCH=4
 ZERO_STAGE=2
+
+cat <<EOT > $DS_CONFIG
+{
+  "train_batch_size" : $GLOBAL_BATCH,
+  "train_micro_batch_size_per_gpu": $MICRO_BATCH,
+  "steps_per_print": 1,
+
+  "zero_optimization": {
+    "stage": $ZERO_STAGE
+  },
+
+  "fp16": {
+    "enabled": true,
+    "initial_scale_power": 12
+  },
+
+  "wall_clock_breakdown" : true
+}
+EOT
 
 ds_args=""
 ds_args=" --deepspeed ${ds_args}"
@@ -41,8 +62,8 @@ GPT_ARGS="
     --num-attention-heads 16 \
     --seq-length 1024 \
     --max-position-embeddings 1024 \
-    --micro-batch-size 4 \
-    --global-batch-size 64 \
+    --micro-batch-size $MICRO_BATCH \
+    --global-batch-size $GLOBAL_BATCH \
     --lr 0.00015 \
     --train-iters 500 \
     --lr-decay-iters 320000 \
