@@ -103,7 +103,7 @@ class MixedFusedLayerNorm(torch.nn.Module):
         else:
             return FusedLayerNormAffineFunction.apply(input, weight, self.bias, self.normalized_shape, self.eps)
     else:
-        if 'memory_efficient' in inspect.getfullargspec(FastLayerNormFN.apply).args:
+        if 'memory_efficient' in inspect.getfullargspec(FastLayerNormFN.forward).args:
             output = FastLayerNormFN.apply(input, weight, self.bias, self.eps, self.mem_efficient_ln)
         else:
             output = FastLayerNormFN.apply(input, weight, self.bias, self.eps)
