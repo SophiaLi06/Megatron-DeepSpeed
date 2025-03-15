@@ -78,6 +78,12 @@ if [ $USE_DEEPSPEED -eq 1 ]; then
     ds_args=" --zero-stage=$ZERO_STAGE ${ds_args}"
     ds_args=" --deepspeed-activation-checkpointing ${ds_args}"
     ds_args=" --no-persist-layer-norm ${ds_args}"
+else
+    echo "DeepSpeed is not enabled"
+    ds_args="
+        --train_batch_size $GLOBAL_BATCH \
+        --train_micro_batch_size $MICRO_BATCH \
+    "
 fi
 
 
