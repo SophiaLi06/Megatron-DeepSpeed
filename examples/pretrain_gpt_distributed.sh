@@ -2,10 +2,15 @@
 
 RECREATE_CHECKPOINTS=0
 # add an "-d" option to delete the previous checkpoint
-while getopts "d" opt; do
+USE_DEEPSPEED=0
+# add an "-z" option to enable zero
+while getopts "dz" opt; do
   case ${opt} in
     d )
       RECREATE_CHECKPOINTS=1
+      ;;
+    z )
+      USE_DEEPSPEED=1
       ;;
     \? )
       echo "Usage: cmd [-d]"
@@ -65,12 +70,16 @@ cat <<EOT > $DS_CONFIG
 EOT
 
 ds_args=""
-ds_args=" --deepspeed ${ds_args}"
-ds_args=" --no-pipeline-parallel ${ds_args}" 
-ds_args=" --deepspeed_config=$DS_CONFIG ${ds_args}"
-ds_args=" --zero-stage=$ZERO_STAGE ${ds_args}"
-ds_args=" --deepspeed-activation-checkpointing ${ds_args}"
-ds_args=" --no-persist-layer-norm ${ds_args}"
+if [ $USE_DEEPSPEED -eq 1 ]; then
+    echo "DeepSpeed is enabled"
+    ds_args=" --deepspeed ${ds_args}"
+    ds_args=" --no-pipeline-parallel ${ds_args}" 
+    ds_args=" --deepspeed_config=$DS_CONFIG ${ds_args}"
+    ds_args=" --zero-stage=$ZERO_STAGE ${ds_args}"
+    ds_args=" --deepspeed-activation-checkpointing ${ds_args}"
+    ds_args=" --no-persist-layer-norm ${ds_args}"
+fi
+
 
 DISTRIBUTED_ARGS="
     --nproc_per_node $GPUS_PER_NODE \
