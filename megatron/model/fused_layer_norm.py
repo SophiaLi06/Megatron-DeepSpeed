@@ -103,7 +103,10 @@ class MixedFusedLayerNorm(torch.nn.Module):
         else:
             return FusedLayerNormAffineFunction.apply(input, weight, self.bias, self.normalized_shape, self.eps)
     else:
-        output = FastLayerNormFN.apply(input, weight, self.bias, self.eps)
+        if 'memory_efficient' in inspect.getfullargspec(FastLayerNormFN.apply).args:
+            output = FastLayerNormFN.apply(input, weight, self.bias, self.eps, self.mem_efficient_ln)
+        else:
+            output = FastLayerNormFN.apply(input, weight, self.bias, self.eps)
 
         # Apex's fast layer norm function outputs a 'view' tensor (i.e., has
         # a populated '_base' field). This will result in schedule.py's
