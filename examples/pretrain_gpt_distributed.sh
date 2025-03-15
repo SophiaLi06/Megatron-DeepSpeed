@@ -80,10 +80,6 @@ if [ $USE_DEEPSPEED -eq 1 ]; then
     ds_args=" --no-persist-layer-norm ${ds_args}"
 else
     echo "DeepSpeed is not enabled"
-    ds_args="
-        --train_batch_size $GLOBAL_BATCH \
-        --train_micro_batch_size $MICRO_BATCH \
-    "
 fi
 
 

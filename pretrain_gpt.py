@@ -43,50 +43,59 @@ def model_provider(pre_process=True, post_process=True):
         dpg = mpu.get_data_parallel_group()
     else:
         dpg = None
-    with deepspeed.zero.Init(data_parallel_group=dpg,
+    if args.deepspeed:
+        with deepspeed.zero.Init(data_parallel_group=dpg,
                              remote_device=None if args.remote_device == 'none' else args.remote_device,
                              config_dict_or_path=args.deepspeed_config_dict,
                              enabled=args.zero_stage == 3,
                              mpu=mpu):
-        if args.deepspeed and not args.no_pipeline_parallel:
-            model = GPTModelPipe(
-                config=config,
-                num_tokentypes=0,
-                parallel_output=True
-            )
-            # This is a hack to give us a reference to get_batch_pipe from within training.py
-            # We need to call model.set_batch_fn after deepspeed.initialize
-            model._megatron_batch_fn = get_batch_pipe
+            if not args.no_pipeline_parallel:
+                model = GPTModelPipe(
+                    config=config,
+                    num_tokentypes=0,
+                    parallel_output=True
+                )
+                # This is a hack to give us a reference to get_batch_pipe from within training.py
+                # We need to call model.set_batch_fn after deepspeed.initialize
+                model._megatron_batch_fn = get_batch_pipe
 
-            # Predompute the attention mask and store it in args. This avoids having to
-            # pipeline it as an activation during training. The mask is constant, and thus
-            # we can reuse it.
-            attention_mask = torch.tril(torch.ones(
-                (1, args.seq_length, args.seq_length), device=get_accelerator().current_device_name())).view(
-                    1, 1, args.seq_length, args.seq_length)
+                # Predompute the attention mask and store it in args. This avoids having to
+                # pipeline it as an activation during training. The mask is constant, and thus
+                # we can reuse it.
+                attention_mask = torch.tril(torch.ones(
+                    (1, args.seq_length, args.seq_length), device=get_accelerator().current_device_name())).view(
+                        1, 1, args.seq_length, args.seq_length)
 
-            # Convert attention mask to binary:
-            attention_mask = (attention_mask < 0.5)
-            if args.fp16:
-                attention_mask = attention_mask.half()
-            elif args.bf16:
-                attention_mask = attention_mask.bfloat16()
+                # Convert attention mask to binary:
+                attention_mask = (attention_mask < 0.5)
+                if args.fp16:
+                    attention_mask = attention_mask.half()
+                elif args.bf16:
+                    attention_mask = attention_mask.bfloat16()
 
-            # Attention mask must be bool.
-            args.attn_mask = attention_mask.to(torch.bool)
+                # Attention mask must be bool.
+                args.attn_mask = attention_mask.to(torch.bool)
 
-            # For prertaining, since sequence length is fixed, cache rotary embedding in args, to avoid communicating around
-            if args.use_rotary_position_embeddings:
-                update_rotary_pos_emb(args.seq_length)
+                # For prertaining, since sequence length is fixed, cache rotary embedding in args, to avoid communicating around
+                if args.use_rotary_position_embeddings:
+                    update_rotary_pos_emb(args.seq_length)
+            else:
+                model = GPTModel(
+                    config=config,
+                    num_tokentypes=0,
+                    parallel_output=True,
+                    pre_process=pre_process,
+                    post_process=post_process
+                )
 
-        else:
-            model = GPTModel(
-                config=config,
-                num_tokentypes=0,
-                parallel_output=True,
-                pre_process=pre_process,
-                post_process=post_process
-            )
+    else:
+        model = GPTModel(
+            config=config,
+            num_tokentypes=0,
+            parallel_output=True,
+            pre_process=pre_process,
+            post_process=post_process
+        )
     see_memory_usage(f"After Building Model", force=True)
     return model
 
