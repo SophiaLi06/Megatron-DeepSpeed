@@ -153,6 +153,7 @@ def pretrain(train_valid_test_dataset_provider,
 
     timers = get_timers()
 
+    args.deepspeed_config_dict = {}
     if args.deepspeed:
         args.deepspeed_config_dict = _create_ds_config_dict()
         if "curriculum_learning" in args.deepspeed_config_dict and \
