@@ -48,7 +48,7 @@ fi
 DS_CONFIG="./examples/ds_configs/gpt_ds_config.json"
 GLOBAL_BATCH=64
 MICRO_BATCH=4
-ZERO_STAGE=3
+ZERO_STAGE=0
 
 cat <<EOT > $DS_CONFIG
 {
@@ -77,7 +77,7 @@ if [ $USE_DEEPSPEED -eq 1 ]; then
     ds_args=" --deepspeed_config=$DS_CONFIG ${ds_args}"
     ds_args=" --zero-stage=$ZERO_STAGE ${ds_args}"
     ds_args=" --deepspeed-activation-checkpointing ${ds_args}"
-    ds_args=" --no-persist-layer-norm ${ds_args}"
+    # ds_args=" --no-persist-layer-norm ${ds_args}" # TODO: this can be removed?
 else
     echo "DeepSpeed is not enabled"
 fi
