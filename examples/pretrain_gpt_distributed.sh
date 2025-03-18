@@ -48,7 +48,7 @@ fi
 DS_CONFIG="./examples/ds_configs/gpt_ds_config.json"
 GLOBAL_BATCH=64
 MICRO_BATCH=4
-ZERO_STAGE=2
+ZERO_STAGE=3
 
 cat <<EOT > $DS_CONFIG
 {
@@ -62,7 +62,13 @@ cat <<EOT > $DS_CONFIG
     "overlap_comm": true,
     "reduce_scatter": true,
     "reduce_bucket_size": 5e8,
-    "allgather_bucket_size": 5e8
+    "allgather_bucket_size": 5e8,
+    "stage3_max_live_parameters": 1e9,
+    "stage3_max_reuse_distance": 1e9,
+    "stage3_prefetch_bucket_size": 1e7,
+    "stage3_param_persistence_threshold": 1e5,
+    "reduce_bucket_size": 1e7,
+    "sub_group_size": 1e9,
   },
 
   "fp16": {
