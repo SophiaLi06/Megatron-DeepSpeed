@@ -67,7 +67,7 @@ cat <<EOT > $DS_CONFIG
     "stage3_max_reuse_distance": 1e9,
     "stage3_prefetch_bucket_size": 1e7,
     "stage3_param_persistence_threshold": 1e5,
-    "sub_group_size": 1e9,
+    "sub_group_size": 1e9
   },
 
   "fp16": {
