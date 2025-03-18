@@ -48,7 +48,7 @@ fi
 DS_CONFIG="./examples/ds_configs/gpt_ds_config.json"
 GLOBAL_BATCH=64
 MICRO_BATCH=4
-ZERO_STAGE=0
+ZERO_STAGE=2
 
 cat <<EOT > $DS_CONFIG
 {
@@ -105,7 +105,7 @@ GPT_ARGS="
     --micro-batch-size $MICRO_BATCH \
     --global-batch-size $GLOBAL_BATCH \
     --lr 0.00015 \
-    --train-iters 100 \
+    --train-iters 500 \
     --lr-decay-iters 320000 \
     --lr-decay-style cosine \
     --min-lr 1.0e-5 \
