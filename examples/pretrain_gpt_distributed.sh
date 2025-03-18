@@ -77,7 +77,7 @@ if [ $USE_DEEPSPEED -eq 1 ]; then
     ds_args=" --deepspeed_config=$DS_CONFIG ${ds_args}"
     ds_args=" --zero-stage=$ZERO_STAGE ${ds_args}"
     ds_args=" --deepspeed-activation-checkpointing ${ds_args}"
-    # ds_args=" --no-persist-layer-norm ${ds_args}" # TODO: this can be removed?
+    # ds_args=" --no-persist-layer-norm ${ds_args}"
 else
     echo "DeepSpeed is not enabled"
 fi

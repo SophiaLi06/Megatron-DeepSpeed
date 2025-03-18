@@ -81,6 +81,7 @@ def get_megatron_optimizer(model,
         param_groups = split_params_into_different_moe_groups_for_optimizer(param_groups)
 
     if args.cpu_optimizer:
+        print('Using CPU-optimized Adam')
         assert args.optimizer == 'adam', 'CPU offloading is for Adam'
         if args.cpu_torch_adam:
             cpu_adam_optimizer = torch.optim.AdamW
@@ -94,16 +95,19 @@ def get_megatron_optimizer(model,
                                        eps=args.adam_eps)
     else:
         if args.optimizer == 'adam':
+            print('Using Adam')
             if args.ds_fused_adam:
                 global Adam
                 from deepspeed.ops.adam import FusedAdam
                 Adam = FusedAdam
+                print('Using DeepSpeed FusedAdam')
             optimizer = Adam(param_groups,
                             lr=args.lr,
                             weight_decay=args.weight_decay,
                             betas=(args.adam_beta1, args.adam_beta2),
                             eps=args.adam_eps)
         elif args.optimizer == 'sgd':
+            print('Using SGD')
             optimizer = SGD(param_groups,
                             lr=args.lr,
                             weight_decay=args.weight_decay,
