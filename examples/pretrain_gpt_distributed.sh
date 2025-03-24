@@ -48,7 +48,7 @@ fi
 DS_CONFIG="./examples/ds_configs/gpt_ds_config.json"
 GLOBAL_BATCH=64
 MICRO_BATCH=4
-ZERO_STAGE=3
+ZERO_STAGE=0
 
 cat <<EOT > $DS_CONFIG
 {
@@ -57,17 +57,17 @@ cat <<EOT > $DS_CONFIG
   "steps_per_print": 100,
 
   "zero_optimization": {
-    "stage": $ZERO_STAGE,
-    "contiguous_gradients": true,
-    "overlap_comm": true,
-    "reduce_scatter": true,
-    "reduce_bucket_size": 5e8,
-    "allgather_bucket_size": 5e8,
-    "stage3_max_live_parameters": 1e9,
-    "stage3_max_reuse_distance": 1e9,
-    "stage3_prefetch_bucket_size": 1e7,
-    "stage3_param_persistence_threshold": 1e5,
-    "sub_group_size": 1e9
+    "stage": $ZERO_STAGE
+    # "contiguous_gradients": true,
+    # "overlap_comm": true,
+    # "reduce_scatter": true,
+    # "reduce_bucket_size": 5e8,
+    # "allgather_bucket_size": 5e8,
+    # "stage3_max_live_parameters": 1e9,
+    # "stage3_max_reuse_distance": 1e9,
+    # "stage3_prefetch_bucket_size": 1e7,
+    # "stage3_param_persistence_threshold": 1e5,
+    # "sub_group_size": 1e9
   },
 
   "fp16": {
