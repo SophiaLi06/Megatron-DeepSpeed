@@ -87,7 +87,8 @@ cat <<EOT > $DS_CONFIG
 
   "zero_optimization": {
     "stage": $ZERO_STAGE,
-    "contiguous_gradients": true
+    "contiguous_gradients": true,
+    "stage3_prefetch_bucket_size": 1e7
   },
 
   "fp16": {
