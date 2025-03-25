@@ -47,8 +47,8 @@ fi
 
 DS_CONFIG="./examples/ds_configs/gpt_ds_config.json"
 GLOBAL_BATCH=64
-MICRO_BATCH=8
-ZERO_STAGE=3
+MICRO_BATCH=1
+ZERO_STAGE=0
 
 # cat <<EOT > $DS_CONFIG
 # {
@@ -86,8 +86,7 @@ cat <<EOT > $DS_CONFIG
   "steps_per_print": 100,
 
   "zero_optimization": {
-    "stage": $ZERO_STAGE,
-    "contiguous_gradients": true
+    "stage": $ZERO_STAGE
   },
 
   "fp16": {
