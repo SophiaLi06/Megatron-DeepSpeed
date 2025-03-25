@@ -50,35 +50,6 @@ GLOBAL_BATCH=64
 MICRO_BATCH=8
 ZERO_STAGE=1
 
-cat <<EOT > $DS_CONFIG
-{
-  "train_batch_size" : $GLOBAL_BATCH,
-  "train_micro_batch_size_per_gpu": $MICRO_BATCH,
-  "steps_per_print": 100,
-
-  "zero_optimization": {
-    "stage": $ZERO_STAGE,
-    "contiguous_gradients": true,
-    "overlap_comm": true,
-    "reduce_scatter": true,
-    "reduce_bucket_size": 5e8,
-    "allgather_bucket_size": 5e8,
-    "stage3_max_live_parameters": 1e9,
-    "stage3_max_reuse_distance": 1e9,
-    "stage3_prefetch_bucket_size": 1e7,
-    "stage3_param_persistence_threshold": 1e5,
-    "sub_group_size": 1e9
-  },
-
-  "fp16": {
-    "enabled": true,
-    "initial_scale_power": 12
-  },
-
-  "wall_clock_breakdown" : true
-}
-EOT
-
 # cat <<EOT > $DS_CONFIG
 # {
 #   "train_batch_size" : $GLOBAL_BATCH,
@@ -89,7 +60,14 @@ EOT
 #     "stage": $ZERO_STAGE,
 #     "contiguous_gradients": true,
 #     "overlap_comm": true,
-#     "stage3_prefetch_bucket_size": 1e7
+#     "reduce_scatter": true,
+#     "reduce_bucket_size": 5e8,
+#     "allgather_bucket_size": 5e8,
+#     "stage3_max_live_parameters": 1e9,
+#     "stage3_max_reuse_distance": 1e9,
+#     "stage3_prefetch_bucket_size": 1e7,
+#     "stage3_param_persistence_threshold": 1e5,
+#     "sub_group_size": 1e9
 #   },
 
 #   "fp16": {
@@ -100,6 +78,27 @@ EOT
 #   "wall_clock_breakdown" : true
 # }
 # EOT
+
+cat <<EOT > $DS_CONFIG
+{
+  "train_batch_size" : $GLOBAL_BATCH,
+  "train_micro_batch_size_per_gpu": $MICRO_BATCH,
+  "steps_per_print": 100,
+
+  "zero_optimization": {
+    "stage": $ZERO_STAGE,
+    "contiguous_gradients": true,
+    "overlap_comm": true
+  },
+
+  "fp16": {
+    "enabled": true,
+    "initial_scale_power": 12
+  },
+
+  "wall_clock_breakdown" : true
+}
+EOT
 
 ds_args=""
 if [ $USE_DEEPSPEED -eq 1 ]; then
