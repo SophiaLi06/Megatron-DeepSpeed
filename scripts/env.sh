@@ -1,6 +1,6 @@
-pip install -r requirements/pytorch\:24.01/requirements.txt
+pip install -r requirements/pytorch\:24.07/requirements.txt
 pip install deepspeed
-export PYTORCH_IMAGE=nvcr.io/nvidia/pytorch:24.01-py3
+export PYTORCH_IMAGE=nvcr.io/nvidia/pytorch:24.07-py3
 export CHECKPOINT_PATH="new_checkpoints"
 export TENSORBOARD_LOGS_PATH="workspace/logs"
 export VOCAB_FILE="dataset/gpt/gpt2-vocab.json"
