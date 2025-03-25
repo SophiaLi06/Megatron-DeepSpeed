@@ -46,8 +46,8 @@ if [ $RECREATE_CHECKPOINTS -eq 1 ]; then
 fi
 
 DS_CONFIG="./examples/ds_configs/gpt_ds_config.json"
-GLOBAL_BATCH=128
-MICRO_BATCH=4
+GLOBAL_BATCH=64
+MICRO_BATCH=8
 ZERO_STAGE=1
 
 cat <<EOT > $DS_CONFIG
