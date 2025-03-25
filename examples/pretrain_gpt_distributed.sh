@@ -47,8 +47,8 @@ fi
 
 DS_CONFIG="./examples/ds_configs/gpt_ds_config.json"
 GLOBAL_BATCH=64
-MICRO_BATCH=4
-ZERO_STAGE=3
+MICRO_BATCH=8
+ZERO_STAGE=0
 
 cat <<EOT > $DS_CONFIG
 {
