@@ -18,7 +18,7 @@ torch::Tensor bwd_cuda(
     float scale_factor);
 
 torch::Tensor fwd(torch::Tensor const& input, float scale_factor) {
-  AT_ASSERTM(input.dim() == 3, "expected 3D tensor");
+  AT_ASSERTM(input.dim() == 3, "expected 3D tensor, got %d", input.dim());
   AT_ASSERTM((input.scalar_type() == at::ScalarType::Half) ||
 	     (input.scalar_type() == at::ScalarType::BFloat16), 
       "Only fp16 and bf16 are supported");
