@@ -25,7 +25,7 @@ shift $((OPTIND -1))
 
 export CUDA_DEVICE_MAX_CONNECTIONS=1
 
-GPUS_PER_NODE=1
+GPUS_PER_NODE=2
 # Change for multinode config
 MASTER_ADDR=10.1.1.3
 MASTER_PORT=$7
