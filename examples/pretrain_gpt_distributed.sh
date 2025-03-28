@@ -86,7 +86,8 @@ cat <<EOT > $DS_CONFIG
   "steps_per_print": 100,
 
   "zero_optimization": {
-    "stage": $ZERO_STAGE
+    "stage": $ZERO_STAGE,
+    "overlap_comm": true
   },
 
   "fp16": {
