@@ -21,3 +21,6 @@ logs
 
 # Data folder
 bookcorpus_data/
+
+# Workspace folder
+workspace/
