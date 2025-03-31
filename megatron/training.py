@@ -1292,10 +1292,6 @@ def train(forward_step_func, model, optimizer, opt_param_scheduler,
                         optimizer,
                         opt_param_scheduler,
                         config)
-            if iteration == 100:
-                et.stop()
-                et.unregister_callback()
-            prof.step()
 
             iteration += 1
             args.iteration = iteration
@@ -1405,6 +1401,11 @@ def train(forward_step_func, model, optimizer, opt_param_scheduler,
                 print_datetime(f"Detected kill switch at {args.kill_switch_file}, "
                             f"iteration={iteration}. Exiting")
                 sys.exit()
+            
+            if iteration == 101:
+                et.stop()
+                et.unregister_callback()
+            prof.step()
 
     return iteration
 
