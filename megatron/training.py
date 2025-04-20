@@ -1251,6 +1251,7 @@ def train(forward_step_func, model, optimizer, opt_param_scheduler,
         
     def trace_handler(prof):
         prof.export_chrome_trace(f"./workspace/4nodes_zero{args.zero_stage}/kineto_trace_{args.rank}_zero{args.zero_stage}_100G.json")
+    trace_iterations = 3
     et = ExecutionTraceObserver()
     et.register_callback(f'./workspace/4nodes_zero{args.zero_stage}/pytorch_et_{args.rank}_zero{args.zero_stage}_100G.json')
     with profile(
@@ -1258,7 +1259,7 @@ def train(forward_step_func, model, optimizer, opt_param_scheduler,
                 torch.profiler.ProfilerActivity.CPU,
                 torch.profiler.ProfilerActivity.CUDA,
             ],
-            schedule=torch.profiler.schedule(wait=0, warmup=100, active=1, repeat=1),
+            schedule=torch.profiler.schedule(wait=0, warmup=100, active=trace_iterations, repeat=1),
             record_shapes=True,
             on_trace_ready=trace_handler,
             with_stack=False,
@@ -1402,7 +1403,7 @@ def train(forward_step_func, model, optimizer, opt_param_scheduler,
                             f"iteration={iteration}. Exiting")
                 sys.exit()
             
-            if iteration == 101:
+            if iteration == 100 + trace_iterations:
                 et.stop()
                 et.unregister_callback()
             prof.step()
