@@ -48,7 +48,7 @@ fi
 DS_CONFIG="./examples/ds_configs/gpt_ds_config.json"
 GLOBAL_BATCH=64
 MICRO_BATCH=2
-ZERO_STAGE=3
+ZERO_STAGE=2
 
 # cat <<EOT > $DS_CONFIG
 # {
@@ -87,7 +87,8 @@ cat <<EOT > $DS_CONFIG
 
   "zero_optimization": {
     "stage": $ZERO_STAGE,
-    "overlap_comm": true
+    "overlap_comm": true,
+    "reduce_scatter": true
   },
 
   "fp16": {
