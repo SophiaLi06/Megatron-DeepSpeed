@@ -90,7 +90,7 @@ cat <<EOT > $DS_CONFIG
     "overlap_comm": true,
     "reduce_scatter": true,
     "use_multi_rank_bucket_allreduce": false,
-    "reduce_bucket_size": 1e8
+    "reduce_bucket_size": 5e7
   },
 
   "fp16": {

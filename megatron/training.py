@@ -1250,10 +1250,10 @@ def train(forward_step_func, model, optimizer, opt_param_scheduler,
         args.random_ltd_layer_num = model[0].random_ltd_scheduler.get_random_ltd_layer_num()
         
     def trace_handler(prof):
-        prof.export_chrome_trace(f"./workspace/4nodes_zero{args.zero_stage}/kineto_trace_{args.rank}_zero{args.zero_stage}_10G_no_multi_rank_bucket_allreduce.json")
+        prof.export_chrome_trace(f"./workspace/4nodes_zero{args.zero_stage}/kineto_trace_{args.rank}_zero{args.zero_stage}_10G_no_multi_rank_bucket_allreduce_bucket5e7.json")
     trace_iterations = 1
     et = ExecutionTraceObserver()
-    et.register_callback(f'./workspace/4nodes_zero{args.zero_stage}/pytorch_et_{args.rank}_zero{args.zero_stage}_10G_no_multi_rank_bucket_allreduce.json')
+    et.register_callback(f'./workspace/4nodes_zero{args.zero_stage}/pytorch_et_{args.rank}_zero{args.zero_stage}_10G_no_multi_rank_bucket_allreduce_bucket5e7.json')
     with profile(
             activities=[
                 torch.profiler.ProfilerActivity.CPU,
