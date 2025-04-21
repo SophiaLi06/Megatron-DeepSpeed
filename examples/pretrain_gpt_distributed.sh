@@ -89,7 +89,8 @@ cat <<EOT > $DS_CONFIG
     "stage": $ZERO_STAGE,
     "overlap_comm": true,
     "reduce_scatter": true,
-    "use_multi_rank_bucket_allreduce": false
+    "use_multi_rank_bucket_allreduce": false,
+    "reduce_bucket_size": 1e8
   },
 
   "fp16": {
