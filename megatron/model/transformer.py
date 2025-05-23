@@ -1662,7 +1662,8 @@ def get_num_experts_per_layer(num_experts: list, num_layers: int, expert_interva
         num_experts = num_experts * (num_layers // expert_interval)
     experts_per_layer = []
     for i in range(num_layers):
-        layer_num = i + 1 + offset
+        layer_num = i + 1
+        # layer_num = i + 1 + offset
         n_e = num_experts[(layer_num-1) // expert_interval] if layer_num % expert_interval == 0 else 1
         experts_per_layer.append(n_e)
     return experts_per_layer
