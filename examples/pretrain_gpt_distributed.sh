@@ -27,7 +27,7 @@ export CUDA_DEVICE_MAX_CONNECTIONS=1
 
 GPUS_PER_NODE=1
 # Change for multinode config
-MASTER_ADDR=10.0.1.10
+MASTER_ADDR=10.0.1.16
 MASTER_PORT=$7
 NNODES=4
 NODE_RANK=$6
@@ -49,6 +49,8 @@ DS_CONFIG="./examples/ds_configs/gpt_ds_config.json"
 GLOBAL_BATCH=64
 MICRO_BATCH=2
 ZERO_STAGE=2
+
+PP_STAGE=4
 
 # cat <<EOT > $DS_CONFIG
 # {
@@ -113,6 +115,7 @@ if [ $USE_DEEPSPEED -eq 1 ]; then
     # ds_args=" --no-persist-layer-norm ${ds_args}"
 else
     echo "DeepSpeed is not enabled"
+    ds_args=" --pipeline-model-parallel-size $PP_STAGE ${ds_args}"
 fi
 
 
